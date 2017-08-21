@@ -1,18 +1,23 @@
 import csv
 
+def extract_features(row, sex_index, age_index):
+	row[sex_index] = '1' if (row[sex_index] == 'female') else '0'
+	age = row[age_index]
+	row[age_index] = '1' if (age and float(age) < 16) else '0'
+	return row
+ 
 def prepTrainer(filename):
 	with open(filename + '.csv') as data:
 		newfile = open(filename + '-prep.csv', 'w', newline='')
 		writer = csv.writer(newfile, delimiter=',')
 		reader = csv.reader(data, delimiter=',')
+		elems = [0,2,4,5,6,7,1]
 		for row in reader:
 			if reader.line_num == 1:
-				writer.writerow(['Id','Class','IsMale','Sibsp','Parch','Survived'])
+				writer.writerow(['Id','Class','Female','Child','Sibsp','Parch','Survived'])
 				continue
-			row[4] = '1' if (row[4] == 'male') else '0'
-			elems = [0,2,4,6,7,1]
-			newrow = [row[x] for x in elems]
-			writer.writerow(newrow)
+			row = extract_features(row,4,5)
+			writer.writerow([row[x] for x in elems])
 		newfile.close()
 
 def prepTester(filename):
@@ -20,16 +25,14 @@ def prepTester(filename):
 		newfile = open(filename + '-prep.csv', 'w', newline='')
 		writer = csv.writer(newfile, delimiter=',')
 		reader = csv.reader(data, delimiter=',')
+		elems = [0,1,3,4,5,6]
 		for row in reader:
 			if reader.line_num == 1:
-				writer.writerow(['ID','Class','IsMale','Sibsp','Parch'])
+				writer.writerow(['ID','Class','Female','Child','Sibsp','Parch'])
 				continue
-			row[3] = '1' if (row[3] == 'male') else '0'
-			elems = [0,1,3,5,6]
-			newrow = [row[x] for x in elems]
-			writer.writerow(newrow)
+			row = extract_features(row,3,4)
+			writer.writerow([row[x] for x in elems])
 		newfile.close()
-
 
 def getStats(filename):
 	with open(filename + '.csv') as data:
@@ -49,7 +52,7 @@ def getStats(filename):
 		print([x/n for x in counts])
 
 def main():
-	prepTrainer('train')
+	prepTester('test')
 
 if __name__ == "__main__":
 	main()

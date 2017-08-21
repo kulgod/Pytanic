@@ -14,8 +14,8 @@ def train_input_fn():
 		for row in reader:
 			if reader.line_num == 1: #skip the header
 				continue
-			y.append([ float(row[5]) ])
-			X.append([ float(row[x]) for x in range(1,5) ])
+			y.append([ float(row[6]) ])
+			X.append([ float(row[x]) for x in range(1,6) ])
 	return tf.constant(X), tf.constant(y)
 
 # Used as a callback by DNNClassifier to get input data
@@ -28,7 +28,7 @@ def test_input_fn():
 		for row in reader:
 			if reader.line_num == 1: #skip the header
 				continue
-			X.append([ float(row[x]) for x in range(1,5) ])
+			X.append([ float(row[x]) for x in range(1,6) ])
 	return np.array(X, dtype=np.float32)
 
 # Writes the predicted outputs to a new file in the format
@@ -41,7 +41,7 @@ def publish(prediction):
 		writer.writerow(['PassengerId','Survived'])
 		i = 892
 		for p in prediction:
-			writer.writerow([i,p])
+			writer.writerow([ i,p ])
 			i += 1
 
 # Creates a 4-layered Neural Network using 4 features 
@@ -50,7 +50,7 @@ def publish(prediction):
 # if the Classifier parameters are changed
 # ---------------------------------------------------------
 def main():
-	feature_columns = [tf.contrib.layers.real_valued_column("", dimension=4)]
+	feature_columns = [tf.contrib.layers.real_valued_column("", dimension=5)]
 	model = tf.contrib.learn.DNNClassifier(feature_columns=feature_columns,
 										hidden_units=[10,5],
 										n_classes=2,

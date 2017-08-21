@@ -3,9 +3,9 @@ from sklearn import neural_network
 
 # Set of indices of columns used globally as
 # features from prepared data
-features = [1,2,3,4]
+features = [1,2,3,4,5]
 
-def getData(filename):
+def get_data(filename):
 	X = []
 	y = []
 	with open(filename) as data:
@@ -15,10 +15,10 @@ def getData(filename):
 				continue
 			xrow = [float(row[x]) for x in features]
 			X.append(xrow)
-			y.append( float(row[5]) )
+			y.append( float(row[6]) )
 	return X,y
 
-def getTest(filename):
+def get_test(filename):
 	ids = []
 	X = []
 	with open(filename) as data:
@@ -32,26 +32,26 @@ def getTest(filename):
 
 def train(X,y):
 	model = neural_network.MLPClassifier(hidden_layer_sizes=(10,5), 
-											activation='tanh', solver='adam', 
+											activation='relu', solver='adam', 
 											learning_rate='adaptive', learning_rate_init=0.0001, 
 											max_iter=100000, tol=0.000001)
 	model.fit(X,y)
 	return model
 
-def publish(ids, yhat):
-	with open('prediction.csv','w',newline='') as fd:
+def publish(ids, yhat, output):
+	with open(output,'w',newline='') as fd:
 		writer = csv.writer(fd,delimiter=',')
 		writer.writerow(['PassengerId', 'Survived'])
 		for x in range(len(ids)):
 			writer.writerow([ int(ids[x]), int(yhat[x]) ])
 
 def main():
-	X, y = getData('train-prep.csv')
-	ids, Xtest = getTest('test-prep.csv')
+	X, y = get_data('train-prep.csv')
+	ids, Xtest = get_test('test-prep.csv')
 	model = train(X,y)
 	yhat = model.predict(Xtest)
 	print(model.score(X,y))
-	publish(ids, yhat)
+	publish(ids, yhat, './output/prediction-skl.csv')
 
 if __name__ == "__main__":
 	main()
