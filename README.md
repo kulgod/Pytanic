@@ -7,9 +7,9 @@ Each of the following models & libraries were tested, with the highest/final sco
 - K-Nearest-Neighbors implemented from scratch in python
 - Neural Network using SKLearn's MLPClassifier
 
-# tensorflow
+## tensorflow
 
-# k-nearest-neighbors
+## k-nearest-neighbors
 
-# scikit-learn
+## scikit-learn
 
