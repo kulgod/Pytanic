@@ -4,7 +4,7 @@ Predicting survival for passengers aboard Titanic using a variety of machine lea
 Each of the following models & libraries were tested, with the highest/final score achieved using a simple ensemble method.
 
 - Neural Network using Tensorflow's DNNClassifier
-- K-Nearest-Neighbors implemented from scratch in python
+- K-Nearest-Neighbors from scratch
 - Neural Network using SKLearn's MLPClassifier
 
 ## tensorflow
