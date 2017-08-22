@@ -44,7 +44,7 @@ def main():
 
 	y_publish = np.column_stack((test_df.as_matrix(['ID']), yhat))
 	publish_df = pd.DataFrame(y_publish)
-	publish_df.to_csv("prediction-kmc.csv", header=["PassengerId","Survived"], index=False)
+	publish_df.to_csv("output/prediction-kmc.csv", header=["PassengerId","Survived"], index=False)
 
 if __name__ == "__main__":
 	main()
